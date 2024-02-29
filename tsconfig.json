@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
+      "jsx": "react",
+      "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "module": "es6",
+    "moduleResolution": "node",
     "target": "es5",
-    "allowJs": true
+    "allowJs": true,
+    "outDir": "./dist"
   },
-  "files": ["src/index.ts"]
+  "files": ["src/index.tsx", "server/index.ts"]
 }
