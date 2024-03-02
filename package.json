@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack  --mode=development",
+    "build:dev": "nodemon webpack  --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
     "start": "webpack serve --open"
@@ -15,16 +15,20 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^20.11.24",
     "@types/react-dom": "^18.2.19",
     "@webpack-cli/generators": "^3.0.7",
     "css-loader": "^6.9.0",
     "html-webpack-plugin": "^5.6.0",
     "mini-css-extract-plugin": "^2.7.7",
+    "nodemon": "^3.1.0",
     "prettier": "^3.0.3",
+    "prisma": "^5.10.2",
     "sass": "^1.69.7",
     "sass-loader": "^14.0.0",
     "style-loader": "^3.3.4",
     "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4",
@@ -34,9 +38,12 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
+    "@prisma/client": "^5.10.2",
+    "@types/express": "^4.17.21",
     "concurrently": "^8.2.2",
+    "express": "^4.18.3",
     "framer-motion": "^11.0.6",
-    "nodemon": "^3.1.0",
+    "pg": "^8.11.3",
     "react": "^18.2.0"
   }
 }

@@ -10,5 +10,6 @@
     "allowJs": true,
     "outDir": "./dist"
   },
-  "files": ["src/index.tsx", "server/index.ts"]
+  "files": ["src/index.tsx", "server/index.ts"],
+  "exclude": ["node_modules"]
 }
