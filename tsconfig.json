@@ -24,15 +24,15 @@
 
 {
   "compilerOptions": {
+      "jsx": "react",
+      "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
     "module": "NodeNext",
+    "moduleResolution": "node",
     "target": "es6",
     "allowJs": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "outDir": "./dist"
+    "outDir": "./dist",
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "types", "webpack.config.ts"],
-  "exclude": ["node_modules"]
+  "files": ["src/index.tsx", "server/index.ts"]
 }
