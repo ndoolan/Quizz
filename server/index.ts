@@ -1,5 +1,5 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
-import authRouter from './routes/auth';
+import authRouter from './auth/authN.routes';
 
 const app: Application = express();
 const PORT = 3000;
