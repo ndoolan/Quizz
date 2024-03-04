@@ -2,59 +2,59 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Create a new record
-async function createRecord(data: any) {
+// Create a new recording
+async function createRecording(data: any) {
   try {
-    const record = await prisma.record.create({
+    const recording = await prisma.recording.create({
       data,
     });
-    return record;
+    return recording;
   } catch (error) {
-    throw new Error(`Failed to create record: ${error}`);
+    throw new Error(`Failed to create recording: ${error}`);
   }
 }
 
-// Read a record by ID
-async function getRecordById(id: number) {
+// Read a recording by ID
+async function getRecordingById(id: number) {
   try {
-    const record = await prisma.record.findUnique({
+    const recording = await prisma.recording.findUnique({
       where: {
         id,
       },
     });
-    return record;
+    return recording;
   } catch (error) {
-    throw new Error(`Failed to get record: ${error}`);
+    throw new Error(`Failed to get recording: ${error}`);
   }
 }
 
-// Update a record by ID
-async function updateRecordById(id: number, data: any) {
+// Update a recording by ID
+async function updateRecordingById(id: number, data: any) {
   try {
-    const record = await prisma.record.update({
+    const recording = await prisma.recording.update({
       where: {
         id,
       },
       data,
     });
-    return record;
+    return recording;
   } catch (error) {
-    throw new Error(`Failed to update record: ${error}`);
+    throw new Error(`Failed to update recording: ${error}`);
   }
 }
 
-// Delete a record by ID
-async function deleteRecordById(id: number) {
+// Delete a recording by ID
+async function deleteRecordingById(id: number) {
   try {
-    const record = await prisma.record.delete({
+    const recording = await prisma.recording.delete({
       where: {
         id,
       },
     });
-    return record;
+    return recording;
   } catch (error) {
-    throw new Error(`Failed to delete record: ${error}`);
+    throw new Error(`Failed to delete recording: ${error}`);
   }
 }
 
-export { createRecord, getRecordById, updateRecordById, deleteRecordById };
+export { createRecording, getRecordingById, updateRecordingById, deleteRecordingById };

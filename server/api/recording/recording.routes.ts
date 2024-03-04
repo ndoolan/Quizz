@@ -1,12 +1,12 @@
 import express from 'express';
-import { createRecord, getRecordById, updateRecordById, deleteRecordById } from './recording.service';
+import { createRecording, getRecordingById, updateRecordingById, deleteRecordingById } from './recording.service';
 
 const router = express.Router();
 
 // Create a new record
 router.post('/record', async (req, res) => {
   try {
-    const record = await createRecord(req.body);
+    const record = await createRecording(req.body);
     res.status(201).json(record);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -16,7 +16,7 @@ router.post('/record', async (req, res) => {
 // Get a record by ID
 router.get('/record/:id', async (req, res) => {
   try {
-    const record = await getRecordById(Number(req.params.id));
+    const record = await getRecordingById(Number(req.params.id));
     res.status(200).json(record);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -26,7 +26,7 @@ router.get('/record/:id', async (req, res) => {
 // Update a record by ID
 router.put('/record/:id', async (req, res) => {
   try {
-    const record = await updateRecordById(Number(req.params.id), req.body);
+    const record = await updateRecordingById(Number(req.params.id), req.body);
     res.status(200).json(record);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -36,7 +36,7 @@ router.put('/record/:id', async (req, res) => {
 // Delete a record by ID
 router.delete('/record/:id', async (req, res) => {
   try {
-    const record = await deleteRecordById(Number(req.params.id));
+    const record = await deleteRecordingById(Number(req.params.id));
     res.status(200).json(record);
   } catch (error) {
     res.status(500).json({ message: error.message });
