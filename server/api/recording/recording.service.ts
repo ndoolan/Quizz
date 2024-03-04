@@ -4,6 +4,8 @@ const prisma = new PrismaClient();
 
 // Create a new recording
 async function createRecording(data: any) {
+  // TODO upload file to storage bucket and retrieve URL
+
   try {
     const recording = await prisma.recording.create({
       data,
@@ -22,6 +24,8 @@ async function getRecordingById(id: number) {
         id,
       },
     });
+    // TODO return just the URL of bucket object
+
     return recording;
   } catch (error) {
     throw new Error(`Failed to get recording: ${error}`);
@@ -45,6 +49,8 @@ async function updateRecordingById(id: number, data: any) {
 
 // Delete a recording by ID
 async function deleteRecordingById(id: number) {
+  // TODO delete the item in storage bucket or roll back db if failed
+
   try {
     const recording = await prisma.recording.delete({
       where: {
