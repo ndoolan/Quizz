@@ -35,15 +35,14 @@ export async function uploadFile(file: Buffer, fileExt: string, userid= '') {
   return fileName;
 }
 
-// TODO signed URL access denied
+// FIXME signed URL access denied
 export async function getSignedUrl(fileName: string) {
   try {
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 1); // Expire 1 day from when file is requested
-
     const options: GetBucketSignedUrlConfig = {
+      version: "v4",
+      method: "GET",
       action: "read",
-      expires: expiresAt.getTime()
+      expires: Date.now() + 30 * 60 * 1000,
     }
 
     const url = bucket.getSignedUrl(options)
@@ -51,6 +50,17 @@ export async function getSignedUrl(fileName: string) {
   } catch (e) {
     console.error(e.message);
     return Promise.reject(new Error('Error: unable to get recording URL.'));
+  }
+}
+
+export async function getUrl(fileName: string) {
+  const fileExists = await checkFileExists(fileName);
+  if (fileExists) {
+    const url = `https://storage.googleapis.com/${process.env.BUCKET_NAME}/${fileName}`;
+    return url;
+  }
+  else {
+    throw new Error("File does not exist.");
   }
 }
 

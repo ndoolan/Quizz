@@ -2,18 +2,20 @@ import dotenv from 'dotenv';
 import fs from 'fs/promises';
 // import {fileTypeFromBuffer} from 'file-type';
 import mime from 'mime-kind';
-import {checkFileExists, deleteFile, getSignedUrl, uploadFile} from "./storage";
+import {checkFileExists, deleteFile, getSignedUrl, getUrl, uploadFile} from "./storage";
 import * as path from 'path'
 
 describe('Google Cloud Storage Configuration', () => {
   beforeAll(() => {
     dotenv.config();
   })
+
   it('should locate storage key file', async () => {
     const key = await fs.readFile(process.env.GC_SERVICE_KEY, 'utf-8');
     const GC = JSON.parse(key);
     expect(GC.project_id).toBeTruthy();
   })
+
   it('should have a bucket name', async () => {
     const key = await fs.readFile(process.env.GC_SERVICE_KEY, 'utf-8')
     const GC = JSON.parse(key);
@@ -50,8 +52,15 @@ describe('Google Cloud Storage Functionality', () => {
 
   it('should get a signed URL based on the object name', async () => {
     await uploadTestFile();
-    const signedUrl = await getSignedUrl(fileName);
-    console.log(signedUrl[0]);
+    const [signedUrl] = await getSignedUrl(fileName);
+    console.log(signedUrl);
     expect(signedUrl.includes("http"));
+  })
+
+  it('should get a public URL based on the object name', async () => {
+    await uploadTestFile();
+    const url = await getUrl(fileName);
+    console.log(url);
+    expect(url.includes("http"));
   })
 })
