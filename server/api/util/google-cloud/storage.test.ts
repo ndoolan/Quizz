@@ -15,5 +15,7 @@ describe('Google Cloud Storage Configuration', () => {
 })
 
 describe('Google Cloud Storage Functionality', () => {
+  // TODO test file upload
 
+  // TODO test file deletion
 })
