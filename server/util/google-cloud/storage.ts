@@ -36,19 +36,26 @@ export async function uploadFile(file: Buffer, fileExt: string, userid: string |
 }
 
 export async function getSignedUrl(fileName: string) {
+  const fileExists = await checkFileExists(fileName);
+  if (!fileExists) {
+    throw new Error('File does not exist in storage.');
+  }
+
   try {
     const options: GetBucketSignedUrlConfig = {
       version: "v4",
       method: "GET",
       action: "read",
-      expires: Date.now() + 30 * 60 * 1000,
+      expires: Date.now() + 60 * 60 * 1000, // file valid for x * 60 * 1000 minutes
     }
 
-    const url = await bucket.file(fileName).getSignedUrl(options)
-    return url;
+     // Google's type definitions are wrong - getSignedUrl returns a promise
+     // Promise data is an array of strings
+    const [signedUrl] = await bucket.file(fileName).getSignedUrl(options);
+    return signedUrl;
   } catch (e) {
     console.error(e.message);
-    return Promise.reject(new Error('Error: unable to get recording URL.'));
+    return ['Error: unable to get recording URL.'];
   }
 }
 

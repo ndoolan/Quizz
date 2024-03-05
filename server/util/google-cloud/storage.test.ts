@@ -52,9 +52,9 @@ describe('Google Cloud Storage Functionality', () => {
 
   it('should get a signed URL based on the object name', async () => {
     await uploadTestFile();
-    const [signedUrl] = await getSignedUrl(fileName);
-    console.log(signedUrl);
+    const signedUrl = await getSignedUrl(fileName);
     expect(signedUrl.includes("http"));
+    await deleteFile(fileName);
   })
 
   it('should get a public URL based on the object name', async () => {
@@ -62,5 +62,6 @@ describe('Google Cloud Storage Functionality', () => {
     const url = await getUrl(fileName);
     console.log(url);
     expect(url.includes("http"));
+    await deleteFile(fileName);
   })
 })
