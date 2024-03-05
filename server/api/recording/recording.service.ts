@@ -1,11 +1,17 @@
 import {PrismaClient} from '@prisma/client';
 import mime from 'mime-kind';
-import {getUrl, uploadFile} from "../../util/google-cloud/storage";
+import {getSignedUrl, getUrl, uploadFile} from "../../util/google-cloud/storage";
 
 const prisma = new PrismaClient();
 
-// Create a new recording
-async function createRecording(file: Buffer, userId: string | number, questionId: string | number) {
+/**
+ * Uploads recording to cloud storage and creates entry in recording database.
+ * @param {Buffer} file - Buffer of file to be uploaded
+ * @param {string | number} userId - User ID that recording will be associated to
+ * @param {string | number} questionId - Question that recording will be associated to
+ * @returns {string} - URL of file uploaded
+ */
+async function createRecording(file: Buffer, userId: string | number, questionId: string | number): Promise<string> {
   // create dummy object representing database row to insert
   const info = {
     userId: 0,
@@ -16,16 +22,16 @@ async function createRecording(file: Buffer, userId: string | number, questionId
   try {
     info.userId = Number(userId);
     info.questionId = Number(questionId);
-    const fileExt = await mime(file);
+    const {ext} = await mime(file);
 
     // Upload the file to bucket and get the object name/file name/key/etc
-    info.objectKey = await uploadFile(file, fileExt, info.userId);
+    info.objectKey = await uploadFile(file, ext, info.userId);
 
     // Insert {user_id, question_id, GCS file key} into database
     const inserted = await prisma.recording.create({ data: info, });
 
     // If database insertion successful, return URL from storage service
-    const url = await getUrl(inserted.objectKey);
+    const url = await getSignedUrl(inserted.objectKey);
     return url
   } catch (e) {
     throw new Error(`Failed to create recording: ${e.message}`);
