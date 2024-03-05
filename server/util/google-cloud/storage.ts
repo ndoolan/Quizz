@@ -23,7 +23,7 @@ const bucket = storage.bucket(bucketName);
  * @param {string} userid - user ID to generate unique file name
  * @returns {string} - GCS object name to get URL
  */
-export async function uploadFile(file: Buffer, fileExt: string, userid= '') {
+export async function uploadFile(file: Buffer, fileExt: string, userid: string | number) {
   // Generate file name as timestamp
   // fileName is how item will be identified in GCS
   const fileName = `${userid}${Date.now()}.${fileExt}`;
