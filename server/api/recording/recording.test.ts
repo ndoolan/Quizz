@@ -19,22 +19,22 @@ describe('Recording service unit tests', () => {
     userId: 1,
     questionId: 1,
   }
-  const filePath = path.resolve(__dirname, 'testSample.jpg')
+  const filePath = path.resolve(__dirname, 'testSample.jpg');
 
   it('should add a recording to database', async () => {
     // Read the file
     const buf = await fs.readFile(filePath);
-    const extUpload = await mime(buf);
+    const {ext: extUpload} = await mime(buf);
 
     // Upload and get URL
     const url = await createRecording(buf, sampleRecording.userId, sampleRecording.questionId);
 
     // Redownload
     const downloadFile = await downloadFileToBuffer(url);
-    const extDownload = await mime(downloadFile);
+    const {ext: extDownload} = await mime(downloadFile);
 
     expect(url.includes("http")).toBeTruthy();
-    expect(extDownload).toEqual(extUpload)
+    expect(extDownload).toEqual(extUpload);
   }, 10000)
 })
 
