@@ -1,18 +1,27 @@
 import { PrismaClient } from '@prisma/client';
+import {uploadFile} from "../../util/google-cloud/storage";
 
 const prisma = new PrismaClient();
 
 // Create a new recording
-async function createRecording(data: any) {
+async function createRecording(file: Buffer, userId: number, questionId: number) {
   // TODO upload file to storage bucket and retrieve URL
-
+  const info = {
+    user_id: "",
+    question_id: "",
+    object_key: "",
+  };
   try {
+    info.user_id = userId.toString();
+    info.question_id = questionId.toString();
+    info.object_key = await uploadFile(file, '.mp4', info.user_id);
+
     const recording = await prisma.recording.create({
-      data,
+      data:  info,
     });
     return recording;
-  } catch (error) {
-    throw new Error(`Failed to create recording: ${error}`);
+  } catch (e) {
+    throw new Error(`Failed to create recording: ${e.message}`);
   }
 }
 
