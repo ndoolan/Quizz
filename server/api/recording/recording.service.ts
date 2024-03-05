@@ -6,12 +6,12 @@ const prisma = new PrismaClient();
 
 /**
  * Uploads recording to cloud storage and creates entry in recording database.
- * @param {Buffer} file - Buffer of file to be uploaded
- * @param {string | number} userId - User ID that recording will be associated to
- * @param {string | number} questionId - Question that recording will be associated to
- * @returns {string} - URL of file uploaded
+ * @param file - Buffer of file to be uploaded
+ * @param userId - User ID that recording will be associated to
+ * @param questionId - Question that recording will be associated to
+ * @returns - URL of file uploaded
  */
-async function createRecording(file: Buffer, userId: string | number, questionId: string | number): Promise<string> {
+async function createRecording(file: Buffer, userId: string | number, questionId: string | number) {
   // create dummy object representing database row to insert
   const info = {
     userId: 0,
@@ -32,7 +32,11 @@ async function createRecording(file: Buffer, userId: string | number, questionId
 
     // If database insertion successful, return URL from storage service
     const url = await getSignedUrl(inserted.objectKey);
-    return url
+
+    return {
+      url: url,
+      ...inserted,
+    }
   } catch (e) {
     throw new Error(`Failed to create recording: ${e.message}`);
   }
@@ -41,14 +45,18 @@ async function createRecording(file: Buffer, userId: string | number, questionId
 // Read a recording by ID
 async function getRecordingById(id: number) {
   try {
-    const recording = await prisma.recording.findUnique({
-      where: {
-        id,
-      },
-    });
-    // TODO return just the URL of bucket object
+    const recording = await prisma.recording.findUnique({ where: { id, }, });
 
-    return recording;
+    if (!recording) {
+      throw new Error('Recording id not found in database.');
+    }
+
+    const url = await getSignedUrl(recording.objectKey)
+
+    return {
+      ...recording,
+      url: url,
+    }
   } catch (error) {
     throw new Error(`Failed to get recording: ${error}`);
   }
@@ -83,6 +91,15 @@ async function deleteRecordingById(id: number) {
   } catch (error) {
     throw new Error(`Failed to delete recording: ${error}`);
   }
+}
+
+type RecordingResponse = {
+  id: number,
+  userId: number,
+  questionId: number,
+  url: string,
+  objectKey: string,
+  createdAt: Date,
 }
 
 export { createRecording, getRecordingById, updateRecordingById, deleteRecordingById };

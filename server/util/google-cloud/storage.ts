@@ -35,7 +35,7 @@ export async function uploadFile(file: Buffer, fileExt: string, userid: string |
   return fileName;
 }
 
-export async function getSignedUrl(fileName: string) {
+export async function getSignedUrl(fileName: string): Promise<string> {
   const fileExists = await checkFileExists(fileName);
   if (!fileExists) {
     throw new Error('File does not exist in storage.');
@@ -55,7 +55,7 @@ export async function getSignedUrl(fileName: string) {
     return signedUrl;
   } catch (e) {
     console.error(e.message);
-    return ['Error: unable to get recording URL.'];
+    return 'Error: unable to get recording URL.';
   }
 }
 
