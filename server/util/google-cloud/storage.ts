@@ -35,7 +35,6 @@ export async function uploadFile(file: Buffer, fileExt: string, userid: string |
   return fileName;
 }
 
-// FIXME signed URL access denied
 export async function getSignedUrl(fileName: string) {
   try {
     const options: GetBucketSignedUrlConfig = {
@@ -45,7 +44,7 @@ export async function getSignedUrl(fileName: string) {
       expires: Date.now() + 30 * 60 * 1000,
     }
 
-    const url = bucket.getSignedUrl(options)
+    const url = await bucket.file(fileName).getSignedUrl(options)
     return url;
   } catch (e) {
     console.error(e.message);
