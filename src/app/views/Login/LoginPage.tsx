@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks/hook';
 import { login } from '../../../redux/slices/authSlice';
-import './login.css';
 
 const Login = () => {
   const navigate = useNavigate();
