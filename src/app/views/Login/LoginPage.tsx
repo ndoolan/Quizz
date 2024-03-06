@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks/hook';
 import { login } from '../../../redux/slices/authSlice';
-
+import style from './login.module.css';
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -16,8 +16,8 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className={style.body}>
+      <h1 className={style.main}>Login</h1>
       <form onSubmit={onSubmit}>
         <div>
           <label htmlFor='email'>Email</label>

@@ -1,3 +1,9 @@
-body {
+.body {
   background-color: yellow;
+}
+.main {
+  color: blue;
+}
+body {
+  background-color: aquamarine;
 }
