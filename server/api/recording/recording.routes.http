@@ -1,0 +1,23 @@
+###
+# Get recording id = 1
+GET http://localhost:3000/recording/1
+
+###
+# Get all recordings for userId = 1
+GET http://localhost:3000/recording/?user=1
+
+###
+# Delete recording ID (need to specify)
+DELETE http://localhost:3000/recording/23
+
+###
+# Update recording ID
+PUT http://localhost:3000/recording/24
+
+Content-Type: application/json
+{
+  "id": 24,
+  "userId": 1,
+  "questionId": 1,
+  "objectKey": "11709612733971.jpg"
+}
