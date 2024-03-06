@@ -1,5 +1,4 @@
-import express, { Application, Request, Response, NextFunction } from "express";
-const authRouter = require("./routes/auth");
+import express, { Application, Request, Response, NextFunction } from 'express';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
@@ -7,9 +6,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-app.get("/", (_req: Request, res: Response): void => {
-  res.status(200).send("HELLO\n");
+app.get('/', (_req: Request, res: Response): void => {
+  res.status(200).send('HELLO\n');
 });
 
 /**
@@ -18,17 +16,17 @@ app.get("/", (_req: Request, res: Response): void => {
  * @function
  * @param {string} path - Endpoint path
  * @param {function} middleware - Middleware function
- * 
+ *
  */
-app.use("/auth", authRouter); 
+// app.use('/auth', authRouter);
 
 // global error handler
 app.use(
   (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
     const defaultError = {
-      log: "Express error handler caught unknown middleware error",
+      log: 'Express error handler caught unknown middleware error',
       status: 500,
-      message: { err: "An error occurred" },
+      message: { err: 'An error occurred' },
     };
     const errorObj = {
       ...defaultError,

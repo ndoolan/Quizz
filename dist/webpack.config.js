@@ -7,27 +7,17 @@ const path_1 = __importDefault(require("path"));
 const html_webpack_plugin_1 = __importDefault(require("html-webpack-plugin"));
 const mini_css_extract_plugin_1 = __importDefault(require("mini-css-extract-plugin"));
 const config = {
-    entry: './src/index.ts',
+    entry: './src/index.tsx',
     output: {
         path: path_1.default.resolve(__dirname, 'dist'),
     },
     module: {
         rules: [
             {
-                test: /\.(j|t)sx?$/,
-                exclude: /(node_modules)/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                '@babel/preset-env',
-                                '@babel/preset-typescript', // separate TypeScript preset
-                                ['@babel/preset-react', { runtime: 'automatic' }],
-                            ],
-                        },
-                    },
-                ],
+                test: /\.(ts|tsx)$/i,
+                exclude: ['/node_modules/'],
+                loader: 'ts-loader',
+                // use: 'babel-loader'
             },
             {
                 test: /\.s?css$/i,
@@ -44,23 +34,6 @@ const config = {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/resource',
             },
-            // {
-            //   test: /\.(ts|tsx)$/i,
-            //   loader: 'ts-loader',
-            //   exclude: ['/node_modules/'],
-            // },
-            // {
-            //   test: /\.css$/i,
-            //   use: [stylesHandler, 'css-loader'],
-            // },
-            // {
-            //   test: /\.s[ac]ss$/i,
-            //   use: [stylesHandler, 'css-loader', 'sass-loader'],
-            // },
-            // {
-            //   test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-            //   type: 'asset',
-            // },
         ],
     },
     resolve: {
@@ -80,7 +53,7 @@ const config = {
     },
     plugins: [
         new html_webpack_plugin_1.default({
-            template: 'index.html',
+            template: './public/index.html',
         }),
         new mini_css_extract_plugin_1.default(),
     ],
@@ -94,3 +67,13 @@ exports.default = config;
 //   // }
 //   return config;
 // };
+// {
+//   loader: 'babel-loader',
+//   options: {
+//     presets: [
+//       '@babel/preset-env',
+//       '@babel/preset-typescript', // separate TypeScript preset
+//       ['@babel/preset-react', { runtime: 'automatic' }],
+//     ],
+//   },
+// },
