@@ -21,7 +21,7 @@ export const App = ({ name }: Props) => {
 
   return (
     <Router>
-      <ChakraProvider theme={theme}>
+      {/* <ChakraProvider theme={theme}> */}
         <main className="app">
           <Link to="/">Home</Link>
           {auth.currentUser === null && (
@@ -40,7 +40,7 @@ export const App = ({ name }: Props) => {
             <Route path="/user-profile" element={<h1>User Profile</h1>} />
           </Routes>
         </main>
-      </ChakraProvider>
+      {/* </ChakraProvider> */}
     </Router>
   );
 };
