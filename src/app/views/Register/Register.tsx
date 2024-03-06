@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../redux/hooks/hook";
 import { register } from "../../../redux/slices/authSlice";
+import { Container } from "@chakra-ui/react";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -17,41 +18,46 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={onSubmit}>
+    <Container>
+      <Container>Left Side</Container>
+      <Container>
         <div>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <h1>Register</h1>
+          <form onSubmit={onSubmit}>
+            <div>
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="email">Email</label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div>
+              <button type="submit">Sign Up</button>
+            </div>
+          </form>
         </div>
-        <div>
-          <label htmlFor="username">Email</label>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <button type="submit">Sign Up</button>
-        </div>
-      </form>
-    </div>
+      </Container>
+    </Container>
   );
 };
 
