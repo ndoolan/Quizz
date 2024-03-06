@@ -1,4 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
+import authRouter from "./auth/authn.routes";
+import recordingRoutes from "./api/recording/recording.routes";
 // const express = require('express');
 // const { application, request, response, nextFunction } = require('express');
 

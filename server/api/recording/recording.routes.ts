@@ -56,4 +56,15 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Get all recordings for a single user
+router.get('/', async (req, res) => {
+  try {
+    const userId: string = Number(req.userId);
+    if (!userId) throw new Error('No user ID provided.');
+    
+  } catch (e) {
+    console.error(e.message);
+  }
+})
+
 export default router;

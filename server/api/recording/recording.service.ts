@@ -19,7 +19,7 @@ async function createRecording(
   file: Buffer,
   userId: string | number,
   questionId: string | number
-) {
+): Promise<RecordingResponse> {
   // create dummy object representing database row to insert
   const info = {
     userId: 0,
@@ -51,7 +51,7 @@ async function createRecording(
 }
 
 // Read a recording by ID
-async function getRecordingById(id: number) {
+async function getRecordingById(id: number): Promise<RecordingResponse> {
   try {
     const recording = await prisma.recording.findUnique({ where: { id } });
 
@@ -74,9 +74,7 @@ async function getRecordingById(id: number) {
 async function updateRecordingById(id: number, data: any) {
   try {
     const recording = await prisma.recording.update({
-      where: {
-        id,
-      },
+      where: { id },
       data,
     });
     return recording;
@@ -90,11 +88,7 @@ async function deleteRecordingById(id: number) {
   // TODO delete the item in storage bucket or roll back db if failed
 
   try {
-    const recording = await prisma.recording.delete({
-      where: {
-        id,
-      },
-    });
+    const recording = await prisma.recording.delete({ where: { id } });
     return recording;
   } catch (error) {
     throw new Error(`Failed to delete recording: ${error}`);
