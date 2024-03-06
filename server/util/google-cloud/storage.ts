@@ -1,4 +1,4 @@
-import {GetBucketSignedUrlConfig, Storage} from "@google-cloud/storage";
+import {Storage} from "@google-cloud/storage";
 import dotenv from 'dotenv';
 import fs from 'fs';
 
@@ -42,17 +42,20 @@ export async function getSignedUrl(fileName: string): Promise<string> {
   }
 
   try {
-    const options: GetBucketSignedUrlConfig = {
+    // not GetBucketSignedUrlConfig!
+    // getSignedUrl exists for Buckets and Files. For Files, there is no type!
+    const options = {
       version: "v4",
-      method: "GET",
       action: "read",
       expires: Date.now() + 60 * 60 * 1000, // file valid for x * 60 * 1000 minutes
     }
 
-     // Google's type definitions are wrong - getSignedUrl returns a promise
-     // Promise data is an array of strings
+    // Google's type definitions are wrong - getSignedUrl returns a promise
+    // Promise data is an array of strings
+    // https://googleapis.dev/nodejs/storage/latest/File.html#getSignedUrl
+    // @ts-ignore
     const [signedUrl] = await bucket.file(fileName).getSignedUrl(options);
-    return signedUrl;
+    return String(signedUrl);
   } catch (e) {
     console.error(e.message);
     return 'Error: unable to get recording URL.';
