@@ -1,17 +1,24 @@
 import express from 'express';
-import { createRecording, getRecordingById, updateRecordingById, deleteRecordingById } from './recording.service';
+import {
+  createRecording,
+  getRecordingById,
+  updateRecordingById,
+  deleteRecordingById,
+  getRecordingByUserId
+} from './recording.service';
 import path from "path";
 import fs from 'fs/promises';
 
 const router = express.Router();
 
 // Create a new record
+// TODO test route. Need a file as a buffer in request body
 router.post('/', async (req, res) => {
   /**
-   * Request needs to have
-   * 1. File as buffer
-   * 2. userId
-   * 3. questionId
+   * request.body needs to have
+   * 1. file: Buffer
+   * 2. userId: string | number
+   * 3. questionId: string | number
    */
   const FILE = req.body.file ? req.body.file : await fs.readFile(path.resolve(__dirname, 'testSample.jpg'));
   const USERID = req.body.userId ? req.body.userId : 1;
@@ -36,6 +43,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update a record by ID
+// TODO route tested, but maybe should update to a PATCH
 router.put('/:id', async (req, res) => {
   try {
     const record = await updateRecordingById(Number(req.params.id), req.body);
@@ -56,15 +64,18 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Get all recordings for a single user
-// router.get('/', async (req, res) => {
-//   const {userId} = req.body;
-//   try {
-//     let userId: number;
-//     if (!userId) throw new Error('No user ID provided.');
-//
-//   } catch (e) {
-//     console.error(e.message);
-//   }
-// })
+router.get('/', async (req, res) => {
+  console.log(`GET ALL USERS RECORDINGS for user ${req.query.user}`);
+  const userId = Number(req.query.user);
+  try {
+    if (!userId) throw new Error('No user ID provided.');
+    console.log("After userId check");
+    const recordings = await getRecordingByUserId(userId);
+    res.status(200).json(recordings);
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).json({ message: e.message });
+  }
+})
 
 export default router;

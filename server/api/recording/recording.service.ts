@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import mime from 'mime-kind';
 import {
+  deleteFile,
   getSignedUrl,
   getUrl,
   uploadFile,
@@ -70,6 +71,23 @@ async function getRecordingById(id: number): Promise<RecordingResponse> {
   }
 }
 
+async function getRecordingByUserId(userId: number): Promise<RecordingResponse[]> {
+  if (!userId) throw new Error('No user ID provided.');
+
+  const rowsWithUrl: Array<RecordingResponse> = [];
+  try {
+    const dbRows = await prisma.recording.findMany({ where: { userId: userId } });
+    for (let row of dbRows) {
+      const url = await getSignedUrl(row.objectKey);
+      rowsWithUrl.push({...row, url: url})
+    }
+
+    return rowsWithUrl;
+  } catch {
+    throw new Error("Database error.")
+  }
+}
+
 // Update a recording by ID
 async function updateRecordingById(id: number, data: any) {
   try {
@@ -85,10 +103,9 @@ async function updateRecordingById(id: number, data: any) {
 
 // Delete a recording by ID
 async function deleteRecordingById(id: number) {
-  // TODO delete the item in storage bucket or roll back db if failed
-
   try {
     const recording = await prisma.recording.delete({ where: { id } });
+    await deleteFile(recording.objectKey);
     return recording;
   } catch (error) {
     throw new Error(`Failed to delete recording: ${error}`);
@@ -107,6 +124,7 @@ type RecordingResponse = {
 export {
   createRecording,
   getRecordingById,
+  getRecordingByUserId,
   updateRecordingById,
   deleteRecordingById,
 };
