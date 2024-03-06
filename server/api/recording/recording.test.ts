@@ -27,7 +27,7 @@ describe('Recording service unit tests', () => {
     const {ext: extUpload} = await mime(buf);
 
     // Upload and get URL
-    const url = await createRecording(buf, sampleRecording.userId, sampleRecording.questionId);
+    const {url} = await createRecording(buf, sampleRecording.userId, sampleRecording.questionId);
 
     // Redownload
     const downloadFile = await downloadFileToBuffer(url);

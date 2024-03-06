@@ -13,7 +13,6 @@ router.post('/', async (req, res) => {
    * 2. userId
    * 3. questionId
    */
-  // TODO get file, userId, and questionId from request
   const FILE = req.body.file ? req.body.file : await fs.readFile(path.resolve(__dirname, 'testSample.jpg'));
   const USERID = req.body.userId ? req.body.userId : 1;
   const QUESTIONID = req.body.questionId ? req.body.questionId : 1;
@@ -57,14 +56,15 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Get all recordings for a single user
-router.get('/', async (req, res) => {
-  try {
-    const userId: string = Number(req.userId);
-    if (!userId) throw new Error('No user ID provided.');
-    
-  } catch (e) {
-    console.error(e.message);
-  }
-})
+// router.get('/', async (req, res) => {
+//   const {userId} = req.body;
+//   try {
+//     let userId: number;
+//     if (!userId) throw new Error('No user ID provided.');
+//
+//   } catch (e) {
+//     console.error(e.message);
+//   }
+// })
 
 export default router;
