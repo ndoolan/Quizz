@@ -1,20 +1,23 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
-import authRouter from "./auth/authn.routes";
-import recordingRoutes from "./api/recording/recording.routes";
-// const express = require('express');
-// const { application, request, response, nextFunction } = require('express');
+import authRouter from './auth/authn.routes';
+import processRecsRouter from './processRecords/processRecs.routes';
+import cors from 'cors';
 
 const app: Application = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 
-app.use('/auth', authRouter);
-// app.use('/questions');
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
-app.use('/recording', recordingRoutes);
+app.use('/auth', authRouter);
+app.use('/process', processRecsRouter);
+
 app.get('/', (_req: Request, res: Response): void => {
   res.status(200).send('HELLO\n');
 });
+
 // global error handler
 app.use(
   (err: Error, _req: Request, res: Response, _next: NextFunction): void => {

@@ -1,3 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-console.log("You got it working!");
+const jsx_runtime_1 = require("react/jsx-runtime");
+const client_1 = require("react-dom/client");
+const react_redux_1 = require("react-redux");
+const store_1 = require("./redux/store");
+const app_1 = require("./app");
+const container = document.getElementById("root");
+const root = (0, client_1.createRoot)(container);
+root.render((0, jsx_runtime_1.jsx)(react_redux_1.Provider, { store: store_1.store, children: (0, jsx_runtime_1.jsx)(app_1.App, { name: "Edwin" }) }));
