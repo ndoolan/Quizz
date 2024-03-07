@@ -1,0 +1,30 @@
+.body {
+  background-color: yellow;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.logo {
+  height: 100%;
+  background-color: rgb(208, 171, 155);
+}
+.form {
+  width: 100%;
+  text-align: center;
+}
+.main {
+  color: blue;
+}
+#pass {
+  margin: 10px;
+}
+#email {
+  margin: 20px;
+}
+.divs {
+  margin: 20px;
+}
+.button {
+  width: 100px;
+  margin: 5px 10px 10px 40px;
+  padding: 2px;
+}
