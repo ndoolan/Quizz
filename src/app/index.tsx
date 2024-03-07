@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks/hook";
 import { getCurrentUser, logout } from "../redux/slices/authSlice";
 import Login from "./views/Login";
 import Register from "./views/Register";
+import Home from "./views/Home";
 
 interface Props {
   name: string;
@@ -21,7 +22,7 @@ export const App = ({ name }: Props) => {
 
   return (
     <Router>
-      {/* <ChakraProvider theme={theme}> */}
+      <ChakraProvider resetCSS theme={theme}>
         <main className="app">
           <Link to="/">Home</Link>
           {auth.currentUser === null && (
@@ -34,13 +35,13 @@ export const App = ({ name }: Props) => {
             <span onClick={() => dispatch(logout)}>Logout</span>
           )}
           <Routes>
-            <Route path="/" element={<h1>Hello {name}</h1>} />
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/user-profile" element={<h1>User Profile</h1>} />
           </Routes>
         </main>
-      {/* </ChakraProvider> */}
+      </ChakraProvider>
     </Router>
   );
 };
