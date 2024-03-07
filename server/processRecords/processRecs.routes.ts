@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import multStore from './processRecs.service';
+import { createRecording } from '../api/recording/recording.service';
 
 const processRecsRouter = express.Router();
 
@@ -13,6 +14,7 @@ processRecsRouter.post(
     if (!file) {
       return res.status(400).send('No file uploaded');
     }
+    createRecording(file.buffer, 1, 1);
 
     // Handle uploaded file
     console.log('Uploaded file:', file);
