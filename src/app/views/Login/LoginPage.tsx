@@ -17,12 +17,16 @@ const Login = () => {
 
   return (
     <div className={style.body}>
-      <div className={style.logo}></div>
+      <div className={style.logo}>
+        <h1>Logo</h1>
+      </div>
       <div className={style.form}>
         <h1 className={style.main}>Login</h1>
         <form onSubmit={onSubmit}>
-          <div>
-            <label htmlFor='email'>Email</label>
+          <div className={style.divs}>
+            <label id={style.email} htmlFor='email'>
+              Email
+            </label>
             <input
               type='text'
               id='email'
@@ -31,8 +35,10 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div>
-            <label htmlFor='password'>Password</label>
+          <div className={style.divs}>
+            <label id={style.pass} htmlFor='password'>
+              Password
+            </label>
             <input
               type='password'
               id='password'
@@ -42,7 +48,9 @@ const Login = () => {
             />
           </div>
           <div>
-            <button type='submit'>Sign In</button>
+            <button className={style.button} type='submit'>
+              Sign In
+            </button>
           </div>
         </form>
       </div>
