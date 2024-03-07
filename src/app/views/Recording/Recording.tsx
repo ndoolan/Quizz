@@ -1,8 +1,26 @@
 import React, { useState, useRef } from 'react';
 import { Box } from '@chakra-ui/react';
+import axios from 'axios';
+
+// Send Video to Backend
+const sendVideo = async (recording) => {
+  try {
+    const formData = new FormData();
+    formData.append('recording', recording); // input str must match multer upload
+
+    await axios.post('http://localhost:3000/process/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    console.log('Video uploaded successfully');
+  } catch (err) {
+    console.log(`Error sending video to server: ${err}`);
+  }
+};
 
 const Recording = () => {
-  const [recording, setRecording] = useState([]);
   let mediaRecorder;
   const videoPreview = useRef(null);
   const downloadLink = useRef(null);
@@ -30,6 +48,7 @@ const Recording = () => {
 
       mediaRecorder.onstop = () => {
         const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+        sendVideo(videoBlob);
         recordedChunks = [];
 
         const videoURL = URL.createObjectURL(videoBlob);

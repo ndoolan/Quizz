@@ -1,10 +1,13 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
+import processRecsRouter from './processRecords/processRecs.routes';
+import cors from 'cors';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.get('/', (_req: Request, res: Response): void => {
   res.status(200).send('HELLO\n');
@@ -19,6 +22,7 @@ app.get('/', (_req: Request, res: Response): void => {
  *
  */
 // app.use('/auth', authRouter);
+app.use('/process', processRecsRouter);
 
 // global error handler
 app.use(
