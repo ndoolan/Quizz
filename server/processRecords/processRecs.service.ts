@@ -1,8 +1,9 @@
 import multer from 'multer';
 import { join, extname } from 'path';
 import { existsSync, mkdirSync } from 'fs';
+import { NextFunction } from 'express';
 
-const uploadDir = join(__dirname, 'recordings');
+const uploadDir = join(__dirname, 'answers');
 
 // Check if local upload file exits || make one
 if (!existsSync(uploadDir)) {
@@ -25,6 +26,17 @@ const storage = multer.diskStorage({
 });
 
 // Init Multer with Storage Config
+
+const processMult = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const upload = await multStore.single('recording');
+
+    return next();
+  } catch (err) {
+    console.log(`Error in Process Mult: ${err}`);
+  }
+};
+
 const multStore = multer({ storage: storage });
 
 export default multStore;

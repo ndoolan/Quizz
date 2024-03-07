@@ -3,3 +3,4 @@ build
 .env
 .idea
 secrets/
+server/processRecords/answers/

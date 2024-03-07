@@ -29,6 +29,7 @@ async function createRecording(
   };
 
   try {
+    console.log('is null?', file);
     info.userId = Number(userId);
     info.questionId = Number(questionId);
     const { ext } = await mime(file);
@@ -71,20 +72,24 @@ async function getRecordingById(id: number): Promise<RecordingResponse> {
   }
 }
 
-async function getRecordingByUserId(userId: number): Promise<RecordingResponse[]> {
+async function getRecordingByUserId(
+  userId: number
+): Promise<RecordingResponse[]> {
   if (!userId) throw new Error('No user ID provided.');
 
   const rowsWithUrl: Array<RecordingResponse> = [];
   try {
-    const dbRows = await prisma.recording.findMany({ where: { userId: userId } });
+    const dbRows = await prisma.recording.findMany({
+      where: { userId: userId },
+    });
     for (let row of dbRows) {
       const url = await getSignedUrl(row.objectKey);
-      rowsWithUrl.push({...row, url: url})
+      rowsWithUrl.push({ ...row, url: url });
     }
 
     return rowsWithUrl;
   } catch {
-    throw new Error("Database error.")
+    throw new Error('Database error.');
   }
 }
 
