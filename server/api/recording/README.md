@@ -8,6 +8,7 @@ Gets a single recording by recording id. Returns JSON of Recording table row wit
 #### Inputs
 Route parameters: 
 - `/:id`: integer
+- Example: GET http://localhost:3000/api/recording/1
 
 #### Outputs
 ```json
@@ -34,7 +35,7 @@ If a recording entry exists in the database but is missing from cloud storage, t
 #### Inputs
 Route parameters:
 - `/?user={userId}` - integer user ID
-- Example: `GET http://localhost:3000/api/recording/?user=1`
+- Example: GET http://localhost:3000/api/recording/?user=1
 
 #### Outputs
 JSON array of recording database rows with url and question keys.
@@ -77,6 +78,7 @@ Deletes a recording by recording id. File is deleted from cloud storage, then da
 #### Inputs
 Route parameters:
 - `/:id` - integer recording ID
+- Example: DELETE http://localhost:3000/api/recording/24
 
 #### Outputs
 - Status code only
@@ -88,6 +90,7 @@ Updates a recording. Requires schema of recording table as request body.
 #### Inputs
 Route parameters:
 - `/:id` - integer recording ID
+- Example: PUT http://localhost:3000/api/recording/24
 
 Body:
 Content-Type: application/json
