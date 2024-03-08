@@ -83,8 +83,12 @@ async function getRecordingByUserId(
       where: { userId: userId },
     });
     for (let row of dbRows) {
-      const url = await getSignedUrl(row.objectKey);
-      rowsWithUrl.push({ ...row, url: url });
+      try {
+        const url = await getSignedUrl(row.objectKey);
+        rowsWithUrl.push({ ...row, url: url });
+      } catch (e) {
+        console.error("Recording was in db but not on GCS");
+      }
     }
 
     return rowsWithUrl;
