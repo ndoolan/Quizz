@@ -29,6 +29,7 @@ async function createRecording(
   };
 
   try {
+    console.log('is null?', file);
     info.userId = Number(userId);
     info.questionId = Number(questionId);
     const { ext } = await mime(file);

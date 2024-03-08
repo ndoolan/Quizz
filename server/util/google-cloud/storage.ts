@@ -38,6 +38,7 @@ export async function uploadFile(file: Buffer, fileExt: string, userid: string |
 export async function getSignedUrl(fileName: string): Promise<string> {
   const fileExists = await checkFileExists(fileName);
   if (!fileExists) {
+    console.error('File does not exist in Google Cloud.')
     throw new Error('File does not exist in storage.');
   }
 
