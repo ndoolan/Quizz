@@ -30,7 +30,7 @@ const Recording = () => {
 
   useEffect(() => {
     navigator.mediaDevices
-      .getUserMedia({ video: true })
+      .getUserMedia({ video: true, audio: true })
       .then((stream) => {
         videoElement.current.srcObject = stream;
         mediaRecorder = new MediaRecorder(stream);
