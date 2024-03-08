@@ -15,9 +15,8 @@ const Login = () => {
 
       axios
         .post('/auth/login', {
-          Username: '',
-          Email: email,
-          Password: password,
+          username: email,
+          password: password,
         })
         .then(function (response) {
           console.log(response);
