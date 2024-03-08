@@ -14,7 +14,7 @@ const Login = () => {
       localStorage.setItem('accessToken', action.payload.token);
 
       axios
-        .post('/auth/login', {
+        .post('http://localhost:3000/auth/login', {
           username: email,
           password: password,
         })
