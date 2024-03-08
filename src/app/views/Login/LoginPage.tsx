@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../redux/hooks/hook';
 import { login } from '../../../redux/slices/authSlice';
@@ -11,6 +12,17 @@ const Login = () => {
   const onSubmit = (e) => {
     dispatch(login({ email, password })).then((action) => {
       localStorage.setItem('accessToken', action.payload.token);
+
+      axios
+        .post('/auth/login', {
+          Username: '',
+          Email: email,
+          Password: password,
+        })
+        .then(function (response) {
+          console.log(response);
+        });
+
       navigate('/');
     });
   };
