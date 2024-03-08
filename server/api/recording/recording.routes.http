@@ -1,18 +1,18 @@
 ###
 # Get recording id = 1
-GET http://localhost:3000/recording/1
+GET http://localhost:3000/api/recording/1
 
 ###
 # Get all recordings for userId = 1
-GET http://localhost:3000/recording/?user=1
+GET http://localhost:3000/api/recording/?user=1
 
 ###
 # Delete recording ID (need to specify)
-DELETE http://localhost:3000/recording/23
+DELETE http://localhost:3000/api/recording/23
 
 ###
 # Update recording ID
-PUT http://localhost:3000/recording/24
+PUT http://localhost:3000/api/recording/24
 
 Content-Type: application/json
 {

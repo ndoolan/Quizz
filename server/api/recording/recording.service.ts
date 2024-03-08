@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Question } from '@prisma/client';
 import mime from 'mime-kind';
 import {
   deleteFile,
@@ -55,7 +55,10 @@ async function createRecording(
 // Read a recording by ID
 async function getRecordingById(id: number): Promise<RecordingResponse> {
   try {
-    const recording = await prisma.recording.findUnique({ where: { id } });
+    const recording = await prisma.recording.findUnique({
+      where: { id },
+      include: { question: true }
+    });
 
     if (!recording) {
       throw new Error('Recording id not found in database.');
@@ -81,6 +84,7 @@ async function getRecordingByUserId(
   try {
     const dbRows = await prisma.recording.findMany({
       where: { userId: userId },
+      include: { question: true }
     });
     for (let row of dbRows) {
       try {
@@ -128,6 +132,7 @@ type RecordingResponse = {
   url: string;
   objectKey: string;
   createdAt: Date;
+  question?: Question;
 };
 
 export {

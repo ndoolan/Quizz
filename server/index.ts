@@ -14,7 +14,7 @@ app.use(cors());
 
 app.use('/auth', authRouter);
 app.use('/process', processRecsRouter);
-app.use('/recording', recordingRoutes);
+app.use('/api/recording', recordingRoutes);
 
 app.get('/', (_req: Request, res: Response): void => {
   res.status(200).send('HELLO\n');
