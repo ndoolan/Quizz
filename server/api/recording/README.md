@@ -72,7 +72,7 @@ JSON array of recording database rows with url and question keys.
 
 ## DELETE 
 ### Delete recording by ID
-Deletes a recording by recording id. Only a status code is returned.
+Deletes a recording by recording id. File is deleted from cloud storage, then database entry is deleted. Only a status code is returned.
 
 #### Inputs
 Route parameters:
