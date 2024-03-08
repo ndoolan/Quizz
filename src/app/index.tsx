@@ -7,6 +7,7 @@ import { getCurrentUser, logout } from '../redux/slices/authSlice';
 import Login from './views/Login';
 import Register from './views/Register';
 import Recording from './views/Recording';
+import Playback from './views/VideoPlayer/Playback';
 
 interface Props {
   name: string;
@@ -30,6 +31,7 @@ export const App = ({ name }: Props) => {
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
             <Link to="/recording">Record a Question</Link>
+            <Link to="/playback">Playback</Link>
           </Fragment>
         )}
         {auth.currentUser && (
@@ -41,6 +43,7 @@ export const App = ({ name }: Props) => {
           <Route path="/register" element={<Register />} />
           <Route path="/user-profile" element={<h1>User Profile</h1>} />
           <Route path="/recording" element={<Recording />} />
+          <Route path="/playback" element={<Playback />} />
         </Routes>
       </main>
       {/* </ChakraProvider> */}
