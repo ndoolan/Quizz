@@ -56,8 +56,8 @@ router.put('/:id', async (req, res) => {
 // Delete a record by ID
 router.delete('/:id', async (req, res) => {
   try {
-    const record = await deleteRecordingById(Number(req.params.id));
-    res.status(200).json(record);
+    await deleteRecordingById(Number(req.params.id));
+    res.status(200);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -69,7 +69,6 @@ router.get('/', async (req, res) => {
   const userId = Number(req.query.user);
   try {
     if (!userId) throw new Error('No user ID provided.');
-    console.log("After userId check");
     const recordings = await getRecordingByUserId(userId);
     res.status(200).json(recordings);
   } catch (e) {

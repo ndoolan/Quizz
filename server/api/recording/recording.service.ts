@@ -92,6 +92,7 @@ async function getRecordingByUserId(
         rowsWithUrl.push({ ...row, url: url });
       } catch (e) {
         console.error("Recording was in db but not on GCS");
+        await prisma.recording.delete({ where: { id: row.id } });
       }
     }
 
@@ -119,9 +120,9 @@ async function deleteRecordingById(id: number) {
   try {
     const recording = await prisma.recording.delete({ where: { id } });
     await deleteFile(recording.objectKey);
-    return recording;
   } catch (error) {
-    throw new Error(`Failed to delete recording: ${error}`);
+    console.error(`Failed to delete recording ${id}, it may already be deleted: ${error}`);
+    throw new Error("Record to delete does not exist.");
   }
 }
 
