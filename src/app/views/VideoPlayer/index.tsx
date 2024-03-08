@@ -1,3 +1,3 @@
-import VideoPlayer from './VideoPlayer';
+import VideoPlayer from './RecordingList';
 
 export default VideoPlayer;
