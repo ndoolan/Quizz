@@ -39,7 +39,7 @@ const Home = () => {
         // 'http://localhost:8080/api/recording/?user=1'
         'http://localhost:8080/api/question'
       );
-      console.log(response.data);
+
       setVideos(response.data);
     })();
 
@@ -89,14 +89,12 @@ function VideoMenuList({ videos, onVideoSelect }) {
         _expanded={{ bg: 'blue.400' }}
         _focus={{ boxShadow: 'outline' }}
       >
-        File
+        Questions
       </MenuButton>
       <MenuList>
         {videos.map((video) => (
           <MenuItem onClick={() => onVideoSelect(video)}>
-            <p>
-              {video.question.body} {video.createdAt}
-            </p>
+            <p>{video.body}</p>
           </MenuItem>
         ))}
       </MenuList>
