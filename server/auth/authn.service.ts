@@ -27,7 +27,10 @@ async function createUser(username: string, password: string, email: string) {
 }
 
 // Validate User Creds
-async function validateUser(username: string, password: string) {
+async function validateUser(
+  username: string,
+  password: string
+): Promise<ResponseObject> {
   try {
     console.log("validateUser");
     const user = await prisma.user.findUnique({
@@ -37,26 +40,43 @@ async function validateUser(username: string, password: string) {
     });
 
     if (!user) {
-      return false;
-    } else {
-      const validPassword = await validatePass(password, user.password);
-      if (validPassword) {
-
-        const { username, firstName, lastName, lastAnswered, email } = user;
-        const userInformation = {
-          username,
-          firstName,
-          lastName,
-          lastAnswered,
-          email,
-        };
-        return userInformation;
-      }
+      return {
+        success: false,
+        data: {},
+        message: "Invalid credentials.",
+      };
     }
+    const validPassword = await validatePass(password, user.password);
+
+    if (validPassword) {
+      const { username, firstName, lastName, lastAnswered, email } = user;
+      const userInformation = {
+        username,
+        firstName,
+        lastName,
+        lastAnswered,
+        email,
+      };
+      return {
+        success: true,
+        data: userInformation,
+        message: "Login successful.",
+      };
+    }
+
+    throw new Error(`Invalid password.`);
     // TODO assign cookies to user browser
   } catch (error) {
     throw new Error(`Failed to valid credentials: ${error}`);
   }
+}
+
+declare global {
+  type ResponseObject = {
+    success: boolean;
+    data?: any | undefined;
+    message: string;
+  };
 }
 
 export { createUser, validateUser };

@@ -1,5 +1,21 @@
+POST http://localhost:80/api/item
+Content-Type: application/json
+
+{}
+
+###
+###
 PUT http://localhost:3000/auth/signup
 
-PUT http://localhost:3000/auth/login
+###
+# log in sample user
+POST http://localhost:3000/auth/login
+Content-Type: application/json
 
+{
+"username": "SATURDAY",
+"password": "testing"
+}
+
+###
 PUT http://localhost:3000/auth/logout 
