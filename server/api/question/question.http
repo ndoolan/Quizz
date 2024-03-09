@@ -1,0 +1,7 @@
+###
+# Random question
+GET http://localhost:3000/api/question/random
+
+###
+# All questions
+GET http://localhost:3000/api/question/
