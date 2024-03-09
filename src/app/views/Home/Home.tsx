@@ -12,12 +12,22 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+} from '@chakra-ui/react';
+import Recording from '../Recording';
+import { useEffect, useState } from 'react';
 
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown } from 'react-icons/fa';
 
-import axios from "axios";
+import axios from 'axios';
+
+// const getQuestion = async () => {
+//   try {
+//     const questions = axios.get('/api/question');
+//     setVideos(questions.data);
+//   } catch (err) {
+//     console.log(`Error Fetching Random Question ${err}`);
+//   }
+// };
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
@@ -26,13 +36,14 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       const response = await axios(
-        "http://localhost:8080/api/recording/?user=1"
+        // 'http://localhost:8080/api/recording/?user=1'
+        'http://localhost:8080/api/question'
       );
-      console.log(response.data);
+
       setVideos(response.data);
     })();
 
-    return () => console.log("clean up");
+    return () => console.log('clean up');
   }, []);
 
   const handleVideoSelect = (video) => {
@@ -49,8 +60,9 @@ const Home = () => {
           <VideoMenuList videos={videos} onVideoSelect={handleVideoSelect} />
           <Box bg="lightgrey" marginBottom="1rem">
             <AspectRatio maxH="400px" ratio={16 / 9}>
-              <video src={selectedVideo} />
+              <Recording />
             </AspectRatio>
+            {/* <video src={selectedVideo} /> */}
             {/* <VideoPlayer selectedVideo={selectedVideo} /> */}
           </Box>
           {/* <Button>Send for processing</Button> */}
@@ -73,18 +85,16 @@ function VideoMenuList({ videos, onVideoSelect }) {
         transition="all 0.2s"
         borderRadius="md"
         borderWidth="1px"
-        _hover={{ bg: "gray.400" }}
-        _expanded={{ bg: "blue.400" }}
-        _focus={{ boxShadow: "outline" }}
+        _hover={{ bg: 'gray.400' }}
+        _expanded={{ bg: 'blue.400' }}
+        _focus={{ boxShadow: 'outline' }}
       >
-        File
+        Questions
       </MenuButton>
       <MenuList>
         {videos.map((video) => (
           <MenuItem onClick={() => onVideoSelect(video)}>
-            <p>
-              {video.question.body} {video.createdAt}
-            </p>
+            <p>{video.body}</p>
           </MenuItem>
         ))}
       </MenuList>

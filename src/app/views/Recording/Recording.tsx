@@ -1,9 +1,8 @@
-import React, { useState, useRef } from 'react';
-import { Box } from '@chakra-ui/react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Box, Button } from '@chakra-ui/react';
 import axios from 'axios';
 
-// Send Video to Backend
-const sendVideo = async (recording) => {
+const sendVideo = async (recording: Blob) => {
   try {
     const formData = new FormData();
     formData.append('recording', recording); // input str must match multer upload
@@ -20,78 +19,131 @@ const sendVideo = async (recording) => {
   }
 };
 
+let mediaRecorder: MediaRecorder;
+let recordedChunks: Blob[] = [];
+
 const Recording = () => {
-  let mediaRecorder;
-  const videoPreview = useRef(null);
-  const downloadLink = useRef(null);
-  const startRecordingButton = useRef(null);
-  const stopRecordingButton = useRef(null);
-  let recordedChunks = [];
+  const videoElement = useRef<HTMLVideoElement>(null);
+
+  const [isRecording, setIsRecording] = useState(false);
+  const [downloadURL, setDownloadURL] = useState('');
+
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        videoElement.current.srcObject = stream;
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+          sendVideo(videoBlob);
+
+          recordedChunks = [];
+          const videoURL = URL.createObjectURL(videoBlob);
+          setDownloadURL(videoURL);
+        };
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  const startRecording = async () => {
+    setIsRecording(true);
+    setDownloadURL('');
+    mediaRecorder.start();
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder?.state === 'recording') {
+      mediaRecorder.stop();
+      setIsRecording(false);
+    }
+  };
 
   const videoStyle = {
     width: '400px',
     height: '400px',
   };
 
-  const startRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-
-      videoPreview.current.srcObject = stream;
-      mediaRecorder = new MediaRecorder(stream);
-
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          recordedChunks.push(event.data);
-        }
-      };
-
-      mediaRecorder.onstop = () => {
-        const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
-        sendVideo(videoBlob);
-        recordedChunks = [];
-
-        const videoURL = URL.createObjectURL(videoBlob);
-        downloadLink.current.href = videoURL;
-        downloadLink.current.style.display = 'block';
-        downloadLink.current.download = 'recorded-video.webm';
-      };
-
-      mediaRecorder.start();
-      startRecordingButton.current.disabled = true;
-      stopRecordingButton.current.disabled = false;
-    } catch (error) {
-      console.error('Error starting recording:', error);
-    }
-  };
-  const stopRecording = () => {
-    if (mediaRecorder && mediaRecorder.state === 'recording') {
-      mediaRecorder.stop();
-      startRecordingButton.current.disabled = false;
-      stopRecordingButton.current.disabled = true;
-    }
-  };
-
   return (
-    <div>
-      RecordingPage
-      <Box width="40em" height="40em">
-        <h1>Video</h1>
-        <video ref={videoPreview} style={videoStyle} autoPlay></video>
-        <div>
-          <button ref={startRecordingButton} onClick={() => startRecording()}>
-            Start Recording
-          </button>
-          <button ref={stopRecordingButton} onClick={() => stopRecording()}>
-            Stop Recording
-          </button>
-        </div>
-        <a ref={downloadLink} id="downloadLink">
+    <Box width="90%" height="90%">
+      <video ref={videoElement} style={videoStyle} autoPlay></video>
+      <div>
+        <Button disabled={isRecording} onClick={startRecording}>
+          Start Recording
+        </Button>
+        <Button disabled={!isRecording} onClick={stopRecording}>
+          Stop Recording
+        </Button>
+      </div>
+      {downloadURL && (
+        <a href={downloadURL} download="recorded-video.webm" id="downloadLink">
           ⬇️ Download Video
         </a>
-      </Box>
-    </div>
+      )}
+    </Box>
   );
 };
 
 export default Recording;
+
+// DO NOT DELETE BELOW ---
+
+// Record Video Func
+// const startRecording = async (
+//   videoPreview: React.MutableRefObject<HTMLVideoElement>,
+//   mediaRecorder,
+//   recordedChunks,
+//   downloadLink,
+//   startRecordingButton,
+//   stopRecordingButton
+// ) => {
+//   try {
+//     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+//     videoPreview.current.srcObject = stream;
+//     mediaRecorder = new MediaRecorder(stream);
+
+//     mediaRecorder.ondataavailable = (event) => {
+//       if (event.data.size > 0) {
+//         recordedChunks.push(event.data);
+//       }
+//     };
+
+//     mediaRecorder.onstop = () => {
+//       const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+//       sendVideo(videoBlob);
+//       recordedChunks = [];
+
+//       const videoURL = URL.createObjectURL(videoBlob);
+//       downloadLink.current.href = videoURL;
+//       downloadLink.current.style.display = 'block';
+//       downloadLink.current.download = 'recorded-video.webm';
+//     };
+
+//     mediaRecorder.start();
+//     startRecordingButton.current.disabled = true;
+//     stopRecordingButton.current.disabled = false;
+//   } catch (error) {
+//     console.error('Error starting recording:', error);
+//   }
+// };
+
+// Stop Recording Func
+// const stopRecording = (
+//   mediaRecorder,
+//   startRecordingButton,
+//   stopRecordingButton
+// ) => {
+//   if (mediaRecorder && mediaRecorder.state === 'recording') {
+//     mediaRecorder.stop();
+//     startRecordingButton.current.disabled = false;
+//     stopRecordingButton.current.disabled = true;
+//   }
+// };

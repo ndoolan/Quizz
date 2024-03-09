@@ -5,3 +5,4 @@ gcloud/
 .idea
 secrets/
 server/processRecords/answers/
+dist

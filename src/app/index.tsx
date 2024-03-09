@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks/hook";
 import { getCurrentUser, logout } from "../redux/slices/authSlice";
 import Login from "./views/Login";
 // import LoginPage from "./views/LoginPage"
+import Playback from "./views/VideoPlayer/Playback";
 import Register from "./views/Register";
 import Home from "./views/Home";
 
@@ -30,7 +31,8 @@ export const App = ({ name }: Props) => {
             <Fragment>
               <Link to="/login">Login</Link>
               <Link to="/register">Register</Link>
-            </Fragment>
+              <Link to="/playback">Playback</Link>
+          </Fragment>
           )}
           {auth.currentUser && (
             <span onClick={() => dispatch(logout)}>Logout</span>
@@ -40,7 +42,8 @@ export const App = ({ name }: Props) => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/user-profile" element={<h1>User Profile</h1>} />
-          </Routes>
+            <Route path="/playback" element={<Playback />} />
+        </Routes>
         </main>
       </ChakraProvider>
     </Router>
