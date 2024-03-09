@@ -18,7 +18,7 @@ app.use('/process', processRecsRouter);
 app.use('/api/recording', recordingRoutes);
 
 app.get('/*', (_req: Request, res: Response): void => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 app.get('/', (_req: Request, res: Response): void => {
