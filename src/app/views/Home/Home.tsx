@@ -1,6 +1,7 @@
 import {
   AspectRatio,
   Box,
+  Text,
   Button,
   Container,
   Divider,
@@ -57,11 +58,12 @@ const Home = () => {
           {/* <InputGroup>
             <Input type="file" id="input" accept="video/*" />
           </InputGroup> */}
+          {/* {selectedQuestion} ? (<Text> {selectedQuestion.body}</Text>) */}
           <VideoMenuList
             question={question}
             handleQuestionSelect={handleQuestionSelect}
           />
-          <Box bg="lightgrey" marginBottom="1rem">
+          <Box bg="lightgrey" marginBottom="1rem" marginTop="1em">
             {/* <AspectRatio maxH="400px" ratio={16 / 9}> */}
             <Recording selectedQuestion={selectedQuestion} />
             {/* </AspectRatio> */}
