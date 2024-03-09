@@ -19,6 +19,14 @@ const sendVideo = async (recording: Blob) => {
   }
 };
 
+// const getQuestion = async () => {
+//   try {
+//     axios.get('/');
+//   } catch (err) {
+//     console.log(`Error Fetching Random Question ${err}`)
+//   }
+// }
+
 let mediaRecorder: MediaRecorder;
 let recordedChunks: Blob[] = [];
 
