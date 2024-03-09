@@ -93,7 +93,7 @@ async function getRecordingByUserId(
         const url = await getSignedUrl(row.objectKey);
         rowsWithUrl.push({ ...row, url: url }); 
       } catch (e) {
-        console.error("Recording was in db but not on GCS");
+        console.error('Recording was in db but not on GCS');
         await prisma.recording.delete({ where: { id: row.id } });
       }
     }

@@ -1,0 +1,5 @@
+PUT http://localhost:3000/auth/signup
+
+PUT http://localhost:3000/auth/login
+
+PUT http://localhost:3000/auth/logout 

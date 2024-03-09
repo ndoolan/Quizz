@@ -4,3 +4,4 @@ build
 .idea
 secrets/
 server/processRecords/answers/
+dist
