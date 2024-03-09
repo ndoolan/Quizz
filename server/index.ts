@@ -3,6 +3,7 @@ import authRouter from './auth/authn.routes';
 import recordingRoutes from './api/recording/recording.routes';
 import processRecsRouter from './processRecords/processRecs.routes';
 import cors from 'cors';
+import questionRoutes from "./api/question/question.routes";
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
@@ -15,6 +16,7 @@ app.use(cors());
 app.use('/auth', authRouter);
 app.use('/process', processRecsRouter);
 app.use('/api/recording', recordingRoutes);
+app.use('/api/question', questionRoutes);
 
 app.get('/', (_req: Request, res: Response): void => {
   res.status(200).send('HELLO\n');
