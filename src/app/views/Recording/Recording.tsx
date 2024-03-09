@@ -1,11 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Text } from '@chakra-ui/react';
 import axios from 'axios';
 
-const sendVideo = async (recording: Blob) => {
+interface RecordingProps {
+  selectedQuestion: any;
+}
+
+const sendVideo = async (recording: Blob, questionId: number | string) => {
   try {
     const formData = new FormData();
     formData.append('recording', recording); // input str must match multer upload
+    formData.append('questionId', String(questionId)); // ques ID
 
     await axios.post('http://localhost:3000/process/upload', formData, {
       headers: {
@@ -21,12 +26,15 @@ const sendVideo = async (recording: Blob) => {
 
 let mediaRecorder: MediaRecorder;
 let recordedChunks: Blob[] = [];
+let questionId: string | number;
 
-const Recording = () => {
+const Recording: React.FC<RecordingProps> = ({ selectedQuestion }) => {
   const videoElement = useRef<HTMLVideoElement>(null);
 
+  if (selectedQuestion) questionId = selectedQuestion.id;
   const [isRecording, setIsRecording] = useState(false);
   const [downloadURL, setDownloadURL] = useState('');
+  // const [ID, setID] = useState(0);
 
   useEffect(() => {
     navigator.mediaDevices
@@ -43,7 +51,7 @@ const Recording = () => {
 
         mediaRecorder.onstop = () => {
           const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
-          sendVideo(videoBlob);
+          sendVideo(videoBlob, questionId); // check ID
 
           recordedChunks = [];
           const videoURL = URL.createObjectURL(videoBlob);
@@ -67,21 +75,39 @@ const Recording = () => {
   };
 
   const videoStyle = {
-    width: '400px',
-    height: '400px',
+    display: 'flex',
+    flexDir: 'column',
+    alignItems: 'center',
+    padding: '1em',
+    w: '100%',
+    h: '100%',
+  };
+
+  const buttonStyle = {
+    display: 'flex',
+    margin: '2em',
+    gap: '.5em',
+    w: '20em',
+    h: '4em',
   };
 
   return (
-    <Box width="90%" height="90%">
-      <video ref={videoElement} style={videoStyle} autoPlay></video>
-      <div>
+    <Box sx={videoStyle}>
+      {selectedQuestion && (
+        <Text
+          bg="lightgrey"
+          marginBottom="1rem"
+        >{`${selectedQuestion.body}`}</Text>
+      )}
+      <video ref={videoElement} autoPlay></video>
+      <Box sx={buttonStyle}>
         <Button disabled={isRecording} onClick={startRecording}>
           Start Recording
         </Button>
         <Button disabled={!isRecording} onClick={stopRecording}>
           Stop Recording
         </Button>
-      </div>
+      </Box>
       {downloadURL && (
         <a href={downloadURL} download="recorded-video.webm" id="downloadLink">
           ⬇️ Download Video

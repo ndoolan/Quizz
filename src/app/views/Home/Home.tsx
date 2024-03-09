@@ -1,6 +1,7 @@
 import {
   AspectRatio,
   Box,
+  Text,
   Button,
   Container,
   Divider,
@@ -30,8 +31,8 @@ import axios from 'axios';
 // };
 
 const Home = () => {
-  const [videos, setVideos] = useState([]);
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [question, setQuestions] = useState([]);
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -40,14 +41,12 @@ const Home = () => {
         'http://localhost:8080/api/question'
       );
 
-      setVideos(response.data);
+      setQuestions(response.data);
     })();
-
   }, []);
 
-    const handleVideoSelect = (video) => {
-      console.log()
-    setSelectedVideo(video.url);
+  const handleQuestionSelect = (question) => {
+    setSelectedQuestion(question);
   };
 
   return (
@@ -57,13 +56,15 @@ const Home = () => {
           {/* <InputGroup>
             <Input type="file" id="input" accept="video/*" />
           </InputGroup> */}
-          <VideoMenuList videos={videos} onVideoSelect={handleVideoSelect} />
-          <Box bg="lightgrey" marginBottom="1rem">
-            <AspectRatio maxH="400px" ratio={16 / 9}>
-              <Recording />
-            </AspectRatio>
-            {/* <video src={selectedVideo} /> */}
-            {/* <VideoPlayer selectedVideo={selectedVideo} /> */}
+          {/* {selectedQuestion} ? (<Text> {selectedQuestion.body}</Text>) */}
+          <VideoMenuList
+            question={question}
+            handleQuestionSelect={handleQuestionSelect}
+          />
+          <Box bg="lightgrey" marginBottom="1rem" marginTop="1em">
+            {/* <AspectRatio maxH="400px" ratio={16 / 9}> */}
+            <Recording selectedQuestion={selectedQuestion} />
+            {/* </AspectRatio> */}
           </Box>
           {/* <Button>Send for processing</Button> */}
         </Box>
@@ -74,7 +75,7 @@ const Home = () => {
   );
 };
 
-function VideoMenuList({ videos, onVideoSelect }) {
+function VideoMenuList({ question, handleQuestionSelect }) {
   return (
     <Menu>
       <MenuButton
@@ -92,9 +93,9 @@ function VideoMenuList({ videos, onVideoSelect }) {
         Questions
       </MenuButton>
       <MenuList>
-        {videos.map((video) => (
-          <MenuItem onClick={() => onVideoSelect(video)}>
-            <p>{video.body}</p>
+        {question.map((question) => (
+          <MenuItem onClick={() => handleQuestionSelect(question)}>
+            <p>{question.body}</p>
           </MenuItem>
         ))}
       </MenuList>
