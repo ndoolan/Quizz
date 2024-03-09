@@ -69,7 +69,8 @@ router.get('/', async (req, res) => {
   const userId = Number(req.query.user);
   try {
     if (!userId) throw new Error('No user ID provided.');
-    const recordings = await getRecordingByUserId(userId);
+      const recordings = await getRecordingByUserId(userId);
+      console.log("User's Recordings", recordings);
     res.status(200).json(recordings);
   } catch (e) {
     console.error(e.message);

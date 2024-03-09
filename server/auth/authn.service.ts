@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { encryptPass, validatePass } from './bcrypt';
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+    log: ['query', 'info', 'warn', 'error'],
+});
 
 // Create User
 async function createUser(username: string, password: string, email: string) {

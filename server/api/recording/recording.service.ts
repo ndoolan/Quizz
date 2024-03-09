@@ -1,13 +1,15 @@
-import { PrismaClient, Question } from '@prisma/client';
-import mime from 'mime-kind';
+import { PrismaClient, Question } from "@prisma/client";
+import mime from "mime-kind";
 import {
   deleteFile,
   getSignedUrl,
   getUrl,
   uploadFile,
-} from '../../util/google-cloud/storage';
+} from "../../util/google-cloud/storage";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+    log: ['query', 'info', 'warn', 'error'],
+});
 
 /**
  * Uploads recording to cloud storage and creates entry in recording database.
@@ -25,11 +27,11 @@ async function createRecording(
   const info = {
     userId: 0,
     questionId: 0,
-    objectKey: '',
+    objectKey: "",
   };
 
   try {
-    console.log('is null?', file);
+    console.log("is null?", file);
     info.userId = Number(userId);
     info.questionId = Number(questionId);
     const { ext } = await mime(file);
@@ -57,11 +59,11 @@ async function getRecordingById(id: number): Promise<RecordingResponse> {
   try {
     const recording = await prisma.recording.findUnique({
       where: { id },
-      include: { question: true }
+      include: { question: true },
     });
 
     if (!recording) {
-      throw new Error('Recording id not found in database.');
+      throw new Error("Recording id not found in database.");
     }
 
     const url = await getSignedUrl(recording.objectKey);
@@ -78,18 +80,18 @@ async function getRecordingById(id: number): Promise<RecordingResponse> {
 async function getRecordingByUserId(
   userId: number
 ): Promise<RecordingResponse[]> {
-  if (!userId) throw new Error('No user ID provided.');
+  if (!userId) throw new Error("No user ID provided.");
 
   const rowsWithUrl: Array<RecordingResponse> = [];
   try {
     const dbRows = await prisma.recording.findMany({
       where: { userId: userId },
-      include: { question: true }
+      include: { question: true },
     });
     for (let row of dbRows) {
-      try {
+        try {
         const url = await getSignedUrl(row.objectKey);
-        rowsWithUrl.push({ ...row, url: url });
+        rowsWithUrl.push({ ...row, url: url }); 
       } catch (e) {
         console.error("Recording was in db but not on GCS");
         await prisma.recording.delete({ where: { id: row.id } });
@@ -98,7 +100,7 @@ async function getRecordingByUserId(
 
     return rowsWithUrl;
   } catch {
-    throw new Error('Database error.');
+    throw new Error("Database error.");
   }
 }
 
@@ -121,7 +123,9 @@ async function deleteRecordingById(id: number) {
     const recording = await prisma.recording.delete({ where: { id } });
     await deleteFile(recording.objectKey);
   } catch (error) {
-    console.error(`Failed to delete recording ${id}, it may already be deleted: ${error}`);
+    console.error(
+      `Failed to delete recording ${id}, it may already be deleted: ${error}`
+    );
     throw new Error("Record to delete does not exist.");
   }
 }
