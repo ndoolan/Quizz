@@ -1,77 +1,68 @@
-import { useState, useEffect } from "react";
 import {
-    Container,
-    Box,
-    Button,
-    Heading,
-    AspectRatio,
-    Input,
-    InputGroup, Divider, Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    MenuDivider
+  AspectRatio,
+  Box,
+  Button,
+  Container,
+  Divider,
+  Heading,
+  Input,
+  InputGroup,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 import { FaChevronDown } from "react-icons/fa";
 
-
-import { VideoPlayer, VideoList } from "../../components";
+import axios from "axios";
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   useEffect(() => {
-    const response = () => {};
-  });
+    (async () => {
+      const response = await axios(
+        "http://localhost:8080/api/recording/?user=1"
+      );
+      console.log(response.data);
+      setVideos(response.data);
+    })();
+
+    return () => console.log("clean up");
+  }, []);
 
   const handleVideoSelect = (video) => {
-    setSelectedVideo(video);
+    setSelectedVideo(video.src);
   };
 
   return (
     <>
       <Container maxWidth="1200px">
         <Box>
-          <InputGroup>
+          {/* <InputGroup>
             <Input type="file" id="input" accept="video/*" />
-          </InputGroup>
-                  {/* <VideoList videos={videos} onVideoSelect={handleVideoSelect} /> */}
-                  <VideoMenuList/>
-          <Box bg-="lightgrey" marginBottom="1rem">
+          </InputGroup> */}
+          <VideoMenuList videos={videos} onVideoSelect={handleVideoSelect} />
+          <Box bg="lightgrey" marginBottom="1rem">
             <AspectRatio maxH="400px" ratio={16 / 9}>
-              <div>Video Component</div>
+              <video src={selectedVideo} />
             </AspectRatio>
-            <VideoPlayer selectedVideo={selectedVideo} />
+            {/* <VideoPlayer selectedVideo={selectedVideo} /> */}
           </Box>
-          <Button>Send for processing</Button>
+          {/* <Button>Send for processing</Button> */}
         </Box>
         <Divider orientation="horizontal" />
-        <Heading> Processing Data </Heading>
-        {/* <SimpleGrid columns={3} spacing={10}> */}
+        {/* <Heading> Processing Data </Heading> */}
       </Container>
     </>
   );
 };
 
-// retrieve list of videos from cloud storage
-const getVideos = async () => {
-    const response = await fetch("http://localhost:8080/api/recording/?user=1");
-    const data = await response.json();
-    console.log(data);
-    return data;
-}
-function VideoMenuList() {
-
-    
-    useEffect(() => {
-        const response = getVideos();
-        
-
-    })
-
-
+function VideoMenuList({ videos, onVideoSelect }) {
   return (
     <Menu>
       <MenuButton
@@ -89,11 +80,13 @@ function VideoMenuList() {
         File
       </MenuButton>
       <MenuList>
-        <MenuItem>New File</MenuItem>
-        <MenuItem>New Window</MenuItem>
-        <MenuDivider />
-        <MenuItem>Open...</MenuItem>
-        <MenuItem>Save File</MenuItem>
+        {videos.map((video) => (
+          <MenuItem onClick={() => onVideoSelect(video)}>
+            <p>
+              {video.question.body} {video.createdAt}
+            </p>
+          </MenuItem>
+        ))}
       </MenuList>
     </Menu>
   );

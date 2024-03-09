@@ -36,10 +36,11 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowClick = () => setShowPassword(!showPassword);
-  const onSubmit = () => {
+  const onSubmit = (e) => {
+    e.preventDefault();
     dispatch(register({ username, email, password })).then((action) => {
-      localStorage.setItem("accessToken", action.payload.token);
-      navigate("/home");
+      //   localStorage.setItem("accessToken", action.payload.token);
+      navigate("/login");
     });
   };
 
@@ -83,7 +84,7 @@ const Register = () => {
                       id="username"
                       placeholder="username"
                       name="username"
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => setUsername(e.target.value)}
                     />
                   </InputGroup>
                 </FormControl>

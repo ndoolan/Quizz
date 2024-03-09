@@ -8,10 +8,11 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const onSubmit = (e) => {
-    dispatch(login({ email, password })).then((action) => {
-      localStorage.setItem('accessToken', action.payload.token);
-      navigate('/');
+    const onSubmit = (e) => {
+    e.preventDefault();
+      dispatch(login({ email, password })).then((action) => {
+    //   localStorage.setItem('accessToken', action.payload.token);
+      navigate('/home');
     });
   };
 

@@ -40,7 +40,7 @@ const config = {
       publicPath: '/src',
       directory: path.resolve(__dirname, 'src'),
     },
-    // historyApiFallback: true,
+    historyApiFallback: true,
     proxy: {
       '/': 'http://localhost:3000',
     },
@@ -56,22 +56,3 @@ const config = {
 };
 
 export default config;
-// module.exports = () => {
-//   // if (isProduction) {
-//   //   config.mode = 'production';
-//   // } else {
-//   //   config.mode = 'development';
-//   // }
-//   return config;
-// };
-
-// {
-//   loader: 'babel-loader',
-//   options: {
-//     presets: [
-//       '@babel/preset-env',
-//       '@babel/preset-typescript', // separate TypeScript preset
-//       ['@babel/preset-react', { runtime: 'automatic' }],
-//     ],
-//   },
-// },

@@ -55,7 +55,7 @@ export const register = createAsyncThunk(
   "auth/register",
   async (userData: Props, thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:8080/auth/register", {
+      const response = await axios.post("http://localhost:8080/auth/signup", {
         user: userData,
       });
       return response.data.user;
@@ -85,6 +85,7 @@ export const register = createAsyncThunk(
 export const login = createAsyncThunk(
   "auth/login",
   async (userData: Props, thunkAPI) => {
+      console.log("auth/login");
     try {
       const response = await axios.post("http://localhost:8080/auth/login", {
         user: userData,
