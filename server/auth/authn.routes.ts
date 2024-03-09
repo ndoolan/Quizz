@@ -38,20 +38,16 @@ authRouter.post(
 // Log In
 authRouter.post("/login", async (req: Request, res: Response) => {
   try {
-    const { username, password } = req.body;
-    if (!username || password) {
-      throw new Error("Missing required fields");
-    }
-      
-    // const username = "Eddy";
-    // const password = "123";
-      // Insert User Log In Function Here
-      
-      const validUser = await validateUser(username, password);
-      console.log('ValidUser'); 
+    console.log("authRouter.login");
+      const { username, password } = req.body.user;
+      if (!username || !password) {
+          throw new Error("Missing required fields"); 
+      }
+    const validUser = await validateUser(username, password);
+
     if (validUser) {
       res.status(200).cookie("quizz", validUser);
-      res.status(200).json("Successfully logged In");
+      res.status(200).json({user: validUser});
     } else {
       res.status(200).json("Invalid User Inputs");
     }

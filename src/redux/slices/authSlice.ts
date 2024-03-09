@@ -30,7 +30,7 @@ const initialState = {
  */
 interface Props {
   username?: string;
-  email: string;
+  email?: string;
   password: string;
 }
 
@@ -58,6 +58,7 @@ export const register = createAsyncThunk(
       const response = await axios.post("http://localhost:8080/auth/signup", {
         user: userData,
       });
+        console.log('Response', response.data.user)
       return response.data.user;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response.data.errors);
@@ -85,7 +86,7 @@ export const register = createAsyncThunk(
 export const login = createAsyncThunk(
   "auth/login",
   async (userData: Props, thunkAPI) => {
-      console.log("auth/login");
+    console.log(userData); 
     try {
       const response = await axios.post("http://localhost:8080/auth/login", {
         user: userData,
@@ -139,7 +140,8 @@ const authSlice = createSlice({
       .addCase(login.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(login.fulfilled, (state, action) => {
+        .addCase(login.fulfilled, (state, action) => {
+          console.log("Login.fulfilled", action); 
         state.isLoading = false;
         state.currentUser = action.payload;
         state.success = true;
