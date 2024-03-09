@@ -1,7 +1,8 @@
-import express, { NextFunction } from "express";
-import { Request, Response } from "express";
+import express, {NextFunction} from "express";
+import {Request, Response} from "express";
 // Import Service Funcs Here :)
-import { createUser, validateUser } from "./authn.service";
+import {createUser, validateUser} from "./authn.service";
+
 const authRouter = express.Router();
 
 // Sign Up
@@ -10,7 +11,7 @@ authRouter.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       console.log(req.body.user);
-      const { username, password, email } = req.body.user;
+      const {username, password, email} = req.body.user;
 
       if (!username || !password || !email) {
         throw {
@@ -37,22 +38,25 @@ authRouter.post(
 
 // Log In
 authRouter.post("/login", async (req: Request, res: Response) => {
+  console.log("entering authRouter");
   try {
-    console.log("authRouter.login");
-      const { username, password } = req.body.user;
-      if (!username || !password) {
-          throw new Error("Missing required fields"); 
-      }
-    const validUser = await validateUser(username, password);
+    const {username, password} = req.body;
+    if (!username || !password) {
+      throw new Error("Missing required fields");
+    }
 
-    if (validUser) {
-      res.status(200).cookie("quizz", validUser);
-      res.status(200).json({user: validUser});
+    const validUser = await validateUser(username, password);
+    console.log("authRouter.post/login")
+    console.log(validUser.message);
+    if (validUser.success) {
+      res.status(200).cookie("quizz", validUser.data);
+      res.status(200).json(validUser);
     } else {
-      res.status(200).json("Invalid User Inputs");
+      res.status(401).json(validUser.message);
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("ERROR: Login error.");
+    res.status(500).json({message: error.message});
   }
 });
 
@@ -62,7 +66,7 @@ authRouter.post("/logout", async (req: Request, res: Response) => {
     res.clearCookie("Quizz");
     res.status(200).json("Successfully logged out");
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({message: error.message});
   }
 });
 
