@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-import { encryptPass, validatePass } from './bcrypt';
+import { PrismaClient } from "@prisma/client";
+import { encryptPass, validatePass } from "./bcrypt";
 const prisma = new PrismaClient({
-    log: ['query', 'info', 'warn', 'error'],
+  log: ["query", "info", "warn", "error"],
 });
 
 // Create User
@@ -15,8 +15,8 @@ async function createUser(username: string, password: string, email: string) {
         email: email,
         password: await encryptPass(password), // Replace with hashed password
         // Add any other desired values for optional fields, e.g.,
-        firstName: 'FurtherTests',
-        lastName: 'One',
+        firstName: "FurtherTests",
+        lastName: "One",
         lastAnswered: new Date(),
       },
     });
@@ -29,6 +29,7 @@ async function createUser(username: string, password: string, email: string) {
 // Validate User Creds
 async function validateUser(username: string, password: string) {
   try {
+    console.log("validateUser");
     const user = await prisma.user.findUnique({
       where: {
         username: username, // bccrypt password to compare
@@ -40,6 +41,7 @@ async function validateUser(username: string, password: string) {
     } else {
       const validPassword = await validatePass(password, user.password);
       if (validPassword) {
+
         const { username, firstName, lastName, lastAnswered, email } = user;
         const userInformation = {
           username,

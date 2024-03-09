@@ -8,11 +8,11 @@ import style from "./Login.module.css";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(login({ email, password })).then((action) => {
+    dispatch(login({ username, password })).then((action) => {
     //   localStorage.setItem("accessToken", action.payload.token);
       navigate("/");
     });
@@ -23,13 +23,13 @@ const Login = () => {
       <h1>Login</h1>
       <form onSubmit={onSubmit}>
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
-            id="email"
-            placeholder="Email"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
+            id="username"
+            placeholder="Username"
+            name="username"
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
         <div>

@@ -6,13 +6,14 @@ import style from './login.module.css';
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
     const onSubmit = (e) => {
     e.preventDefault();
-      dispatch(login({ email, password })).then((action) => {
+        dispatch(login({ username, password })).then((action) => {
+            console.log(action);
     //   localStorage.setItem('accessToken', action.payload.token);
-      navigate('/home');
+      navigate('/');
     });
   };
 
@@ -25,15 +26,15 @@ const Login = () => {
         <h1 className={style.main}>Login</h1>
         <form onSubmit={onSubmit}>
           <div className={style.divs}>
-            <label id={style.email} htmlFor='email'>
-              Email
+            <label id={style.email} htmlFor='username'>
+              Username
             </label>
             <input
               type='text'
-              id='email'
-              placeholder='Email'
-              name='email'
-              onChange={(e) => setEmail(e.target.value)}
+              id='username'
+              placeholder='Username'
+              name='username'
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div className={style.divs}>

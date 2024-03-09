@@ -43,11 +43,11 @@ const Home = () => {
       setVideos(response.data);
     })();
 
-    return () => console.log('clean up');
   }, []);
 
-  const handleVideoSelect = (video) => {
-    setSelectedVideo(video.src);
+    const handleVideoSelect = (video) => {
+      console.log()
+    setSelectedVideo(video.url);
   };
 
   return (
