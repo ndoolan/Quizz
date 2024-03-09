@@ -16,7 +16,8 @@ processRecsRouter.post(
     }
     const buf = await fs.readFileSync(file.path);
     console.log('We are right before createRecoridng');
-    await createRecording(buf, 1, 1);
+    console.log('Heres the number', req.body.questionId);
+    await createRecording(buf, 1, req.body.questionId);
 
     // Handle uploaded file
     console.log('Uploaded file:', file);

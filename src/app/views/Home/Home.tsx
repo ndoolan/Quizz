@@ -48,7 +48,6 @@ const Home = () => {
 
   const handleQuestionSelect = (question) => {
     setSelectedQuestion(question);
-    console.log('selected Question', selectedQuestion);
   };
 
   return (
@@ -95,7 +94,7 @@ function VideoMenuList({ question, handleQuestionSelect }) {
       </MenuButton>
       <MenuList>
         {question.map((question) => (
-          <MenuItem onClick={() => handleQuestionSelect(question.body)}>
+          <MenuItem onClick={() => handleQuestionSelect(question)}>
             <p>{question.body}</p>
           </MenuItem>
         ))}

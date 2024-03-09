@@ -6,10 +6,11 @@ interface RecordingProps {
   selectedQuestion: any;
 }
 
-const sendVideo = async (recording: Blob) => {
+const sendVideo = async (recording: Blob, questionId: number | string) => {
   try {
     const formData = new FormData();
     formData.append('recording', recording); // input str must match multer upload
+    formData.append('questionId', String(questionId)); // ques ID
 
     await axios.post('http://localhost:3000/process/upload', formData, {
       headers: {
@@ -25,12 +26,15 @@ const sendVideo = async (recording: Blob) => {
 
 let mediaRecorder: MediaRecorder;
 let recordedChunks: Blob[] = [];
+let questionId: string | number;
 
 const Recording: React.FC<RecordingProps> = ({ selectedQuestion }) => {
   const videoElement = useRef<HTMLVideoElement>(null);
-  console.log('in rec', selectedQuestion);
+
+  if (selectedQuestion) questionId = selectedQuestion.id;
   const [isRecording, setIsRecording] = useState(false);
   const [downloadURL, setDownloadURL] = useState('');
+  // const [ID, setID] = useState(0);
 
   useEffect(() => {
     navigator.mediaDevices
@@ -47,7 +51,7 @@ const Recording: React.FC<RecordingProps> = ({ selectedQuestion }) => {
 
         mediaRecorder.onstop = () => {
           const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
-          sendVideo(videoBlob);
+          sendVideo(videoBlob, questionId); // check ID
 
           recordedChunks = [];
           const videoURL = URL.createObjectURL(videoBlob);
@@ -75,6 +79,8 @@ const Recording: React.FC<RecordingProps> = ({ selectedQuestion }) => {
     flexDir: 'column',
     alignItems: 'center',
     padding: '1em',
+    w: '100%',
+    h: '100%',
   };
 
   const buttonStyle = {
@@ -88,9 +94,12 @@ const Recording: React.FC<RecordingProps> = ({ selectedQuestion }) => {
   return (
     <Box sx={videoStyle}>
       {selectedQuestion && (
-        <Text bg="lightgrey" marginBottom="1rem">{`${selectedQuestion}`}</Text>
+        <Text
+          bg="lightgrey"
+          marginBottom="1rem"
+        >{`${selectedQuestion.body}`}</Text>
       )}
-      <video ref={videoElement} style={videoStyle} autoPlay></video>
+      <video ref={videoElement} autoPlay></video>
       <Box sx={buttonStyle}>
         <Button disabled={isRecording} onClick={startRecording}>
           Start Recording
