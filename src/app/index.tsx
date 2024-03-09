@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks/hook";
 import { getCurrentUser, logout } from "../redux/slices/authSlice";
 import Login from "./views/Login";
 // import LoginPage from "./views/LoginPage"
+import Playback from "./views/VideoPlayer/Playback";
 import Register from "./views/Register";
 import Home from "./views/Home";
 

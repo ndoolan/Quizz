@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import axios from 'axios';
 
 const sendVideo = async (recording: Blob) => {
@@ -18,14 +18,6 @@ const sendVideo = async (recording: Blob) => {
     console.log(`Error sending video to server: ${err}`);
   }
 };
-
-// const getQuestion = async () => {
-//   try {
-//     axios.get('/');
-//   } catch (err) {
-//     console.log(`Error Fetching Random Question ${err}`)
-//   }
-// }
 
 let mediaRecorder: MediaRecorder;
 let recordedChunks: Blob[] = [];
@@ -80,30 +72,22 @@ const Recording = () => {
   };
 
   return (
-    <div>
-      RecordingPage
-      <Box width="40em" height="40em">
-        <h1>Video</h1>
-        <video ref={videoElement} style={videoStyle} autoPlay></video>
-        <div>
-          <button disabled={isRecording} onClick={startRecording}>
-            Start Recording
-          </button>
-          <button disabled={!isRecording} onClick={stopRecording}>
-            Stop Recording
-          </button>
-        </div>
-        {downloadURL && (
-          <a
-            href={downloadURL}
-            download="recorded-video.webm"
-            id="downloadLink"
-          >
-            ⬇️ Download Video
-          </a>
-        )}
-      </Box>
-    </div>
+    <Box width="90%" height="90%">
+      <video ref={videoElement} style={videoStyle} autoPlay></video>
+      <div>
+        <Button disabled={isRecording} onClick={startRecording}>
+          Start Recording
+        </Button>
+        <Button disabled={!isRecording} onClick={stopRecording}>
+          Stop Recording
+        </Button>
+      </div>
+      {downloadURL && (
+        <a href={downloadURL} download="recorded-video.webm" id="downloadLink">
+          ⬇️ Download Video
+        </a>
+      )}
+    </Box>
   );
 };
 
