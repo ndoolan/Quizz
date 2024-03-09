@@ -9,9 +9,9 @@ authRouter.post('/signup', async (req: Request, res: Response) => {
   try {
     // Create User Function Params should be updated with valid fields
     // Currently hardcoding others in service
-    const username = 'Eddy';
+    const username = 'Mark';
     const password = '123';
-    const email = 'EddypleaseWork@gmail.com';
+    const email = 'whoopwhoop@gmail.com';
     const user = await createUser(username, password, email);
     res.status(201).json('User was successfully created');
   } catch (error) {

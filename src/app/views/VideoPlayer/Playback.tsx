@@ -1,8 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import RecordingList from '.';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Playback = () => {
   const [urls, setUrls] = useState([]);
@@ -24,12 +23,12 @@ const Playback = () => {
     };
     getVideos();
   }, []);
+  console.log('url format', urls);
   console.log('set video', video);
   return (
     <div>
-      <h1>Parent Player Box</h1>
+      <h1>Playback</h1>
       <video src={video} autoPlay></video>
-      <h1>Below Video</h1>
       <RecordingList urls={urls} setVideo={setVideo} />
     </div>
   );

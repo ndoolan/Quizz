@@ -2,7 +2,6 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import authRouter from './auth/authn.routes';
 import recordingRoutes from './api/recording/recording.routes';
 import processRecsRouter from './processRecords/processRecs.routes';
-import recRouter from './api/recording/recording.routes';
 import cors from 'cors';
 
 const app: Application = express();
@@ -13,7 +12,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use('/api/recording', recRouter);
 app.use('/auth', authRouter);
 app.use('/process', processRecsRouter);
 app.use('/api/recording', recordingRoutes);
