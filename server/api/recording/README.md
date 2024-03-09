@@ -1,5 +1,23 @@
 # Recording Routes
 Base URL: `/api/recording` i.e. http://localhost:3000/api/recording
+## POST
+### Create a new Recording
+Uploads a recording to cloud storage and creates an entry in database to access recording and associate with a user and question.
+
+#### Inputs
+Route parameters:
+- `/`
+- Example POST http://localhost:3000/api/recording
+
+Request body:
+
+```typescript
+{
+  file: Buffer;
+  userId: string | number;
+  questionId: string | number;
+}
+```
 
 ## GET 
 ### Get recording by ID
